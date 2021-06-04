@@ -1,5 +1,14 @@
-from pyspark.sql import SparkSession, dataframe
-from pyspark.sql.functions import avg, count
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import avg
+from pyspark.sql.types import *
+
+# schema = StructType([
+#     StructField('author', StringType(), False),
+#     StructField('title', StringType(), False),
+#     StructField('pages', IntegerType, False)
+# ])
+
+# schema = "author STRING, title STRING, pages INT"
 
 spark = (
     SparkSession
