@@ -28,3 +28,22 @@ if __name__ == '__main__':
     df.select(
         expr('DEST_COUNTRY_NAME as destination')
     ).show(5)
+
+    df.select(
+        expr('DEST_COUNTRY_NAME as destination').alias(
+            'DESTINATION_COUNTRY_NAME')
+    ).show(5)
+
+    df.selectExpr(
+        'DEST_COUNTRY_NAME as destination', 'DEST_COUNTRY_NAME'
+    ).show(5)
+
+    df.selectExpr(
+        '*',  # all original columns
+        '(DEST_COUNTRY_NAME = \'United States\') as withinCountry'
+    ).show()
+
+    df.selectExpr(
+        'avg(count)',
+        'count(distinct(DEST_COUNTRY_NAME))'
+    ).show()
