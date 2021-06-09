@@ -4,7 +4,7 @@ from pyspark.sql.functions import max, desc
 spark = SparkSession\
     .builder\
     .appName('Sample App')\
-    .getOrCreate() 
+    .getOrCreate()
 
 flightData2015 = spark\
     .read\
@@ -57,7 +57,7 @@ maxSql.show()
 flightData2015\
     .groupBy('DEST_COUNTRY_NAME')\
     .sum('count')\
-    .withColumnRenamed('sum(count)','destination_total')\
+    .withColumnRenamed('sum(count)', 'destination_total')\
     .sort(desc("destination_total"))\
     .limit(5)\
     .show()
@@ -66,9 +66,7 @@ flightData2015\
 flightData2015\
     .groupBy('DEST_COUNTRY_NAME')\
     .sum('count')\
-    .withColumnRenamed('sum(count)','destination_total')\
+    .withColumnRenamed('sum(count)', 'destination_total')\
     .sort(desc("destination_total"))\
     .limit(5)\
     .explain()
-
-

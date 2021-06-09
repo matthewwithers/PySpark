@@ -1,5 +1,8 @@
+
 from pyspark.sql import SparkSession
 from pyspark.sql.types import *
+from pyspark.sql import Row
+from pyspark.sql.functions import col,column, expr
 
 spark = SparkSession\
     .builder\
@@ -29,9 +32,9 @@ if __name__ == '__main__':
     # Creates an array of type Row(): [Row(id=0), Row(id=1)]
 
     df = spark\
-        .read\
-        .format('json')\
-        .load('../Spark-The-Definitive-Guide/data/flight-data/json/2015-summary.json')
+            .read\
+            .format('json')\
+            .load('../Spark-The-Definitive-Guide/data/flight-data/json/2015-summary.json')
     
 
     df.printSchema()
@@ -42,6 +45,51 @@ if __name__ == '__main__':
         |-- count: long (nullable = true)
     """
 
+    print(
+        spark\
+            .read\
+            .format('json')\
+            .load('../Spark-The-Definitive-Guide/data/flight-data/json/2015-summary.json')\
+            .schema
+    )
+    
+    """
+    StructType (List (StructField(DEST_COUNTRY_NAME,StringType,true),
+                      StructField(ORIGIN_COUNTRY_NAME,StringType,true),
+                      StructField(count,LongType,true)))
+    """
 
 
+    myManualSchema = StructType([
+        StructField('DEST_COUNTRY_NAME',StringType(),True),
+        StructField('ORIGIN_COUNTRY_NAME',StringType(),True),
+        StructField('count',LongType(),False,metadata={'hello':'world'})
+    ])
 
+    df = spark\
+        .read\
+        .format('json')\
+        .schema(myManualSchema)\
+        .load('../Spark-The-Definitive-Guide/data/flight-data/json/2015-summary.json')
+    
+    df.show()
+
+    """
+    In Spark, columns are logical constructions that simply represent a value computed on a per-record basis by means
+    of an expression. This means that to have a real value for a column, we need to have a row, we need to have a Dataframe
+    object. Its not possible to manipulate an individual column outside the context of a dataframe. You must use Spark Transformations
+    within a Dataframe to modify the contents of a column.
+
+    col['SomeColumnName']
+    column['someColumnName']
+    """
+
+    df[df['count'] >= 7000].show()
+    print(df.columns) # ['DEST_COUNTRY_NAME', 'ORIGIN_COUNTRY_NAME', 'count']
+    print(df.first()) # Row(DEST_COUNTRY_NAME='United States', ORIGIN_COUNTRY_NAME='Romania', count=15)
+
+     # Creating Rows
+    myRow = Row('Hello',None,1,False)
+    print(myRow)
+    print(myRow[0])
+ 
