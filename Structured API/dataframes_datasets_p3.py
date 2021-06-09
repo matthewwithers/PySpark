@@ -45,5 +45,6 @@ if __name__ == '__main__':
 
     df.selectExpr(
         'avg(count)',
-        'count(distinct(DEST_COUNTRY_NAME))'
+        'count(distinct(DEST_COUNTRY_NAME))',
+        'count(DEST_COUNTRY_NAME)'
     ).show()
