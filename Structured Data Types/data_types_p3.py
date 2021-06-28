@@ -51,9 +51,7 @@ df\
 df\
     .select(
         translate(col('description'), 'LEET', '1337'),
-        col('description')
-    )\
-    .show(2)
+        col('description')).show(2)
 
 extract_str = '(BLACK|WHITE|RED|GREEN|BLUE)'
 df\
